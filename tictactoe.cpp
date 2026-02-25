@@ -71,7 +71,7 @@ bool checkDraw() {
 }
 
 
-bool inputValidation(const string &line, int &row, int &col) // function to see if there is only two integers as input or not
+bool inputValidation1(const string &line, int &row, int &col) // function to see if there is only two integers as input or not
 {
     stringstream ss(line);
     // try to extract two integers
@@ -94,6 +94,26 @@ bool inputValidation(const string &line, int &row, int &col) // function to see 
 
 }
 
+bool inputValidation2(const string &line, int &row, int &col)
+{
+    if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
+    {
+        cout << "Invalid Input! Enter numbers ranging from 1 to 3.\n";
+        return false;
+    }
+    else if (board[row-1][col-1] != '-')  // checking if the slot is occupied
+    {
+        cout << "Space Occupied!\n";
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+
+
 //get input
 void getInput()
 {
@@ -105,17 +125,9 @@ void getInput()
         cout << "\nEnter a move (eg. 1 2): ";
         getline(cin, line);
 
-        if (inputValidation(line, row, col)) //calling the validation function
+        if (inputValidation1(line, row, col)) //calling the first validation function
         {
-            if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
-            {
-                cout << "Invalid Input! Enter numbers ranging from 1 to 3.\n";
-            }
-            else if (board[row-1][col-1] != '-') 
-            {
-                cout << "Space Occupied!\n";
-            }
-            else
+            if (inputValidation2(line, row, col))  // calling the second validation function
             {
                 board[row-1][col-1] = currentPlayer; // updating board
                 break;
