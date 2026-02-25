@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<sstream>
 using namespace std;
 
 // global variables
@@ -70,21 +71,55 @@ bool checkDraw() {
 }
 
 
+bool inputValidation(const string &line, int &row, int &col) // function to see if there is only two integers as input or not
+{
+    stringstream ss(line);
+    // try to extract two integers
+    if (ss >> row >> col)
+    {
+        // check for extra invalid input
+        string extra;
+        if (ss >> extra)
+        {
+            cout << "Invalid input! Enter exactly two numbers.\n";
+            return false;
+
+        }else
+            {return true;}
+    }else
+    {
+        cout << "Invalid Input! Enter exactly two interger characters!\n";
+        return false;
+    }
+
+}
+
 //get input
 void getInput()
 {
+    string line;
     int row, col;
-    while (true) 
-    { 
-        cout << "\nPlayer " << currentPlayer << " make a move (eg. 0 2): ";
-        cin >> row >> col;
-        if(row >= 0 && row <= 2 && col >= 0 && col <= 2 && board[row][col] == '-')
+
+    while (true)
+    {
+        cout << "\nEnter a move (eg. 1 2): ";
+        getline(cin, line);
+
+        if (inputValidation(line, row, col)) //calling the validation function
         {
-            board[row][col] = currentPlayer;
-            break;
-        }else
-        {
-            cout << "\nInvalid move! Try again.\n";
+            if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
+            {
+                cout << "Invalid Input! Enter numbers ranging from 1 to 3.\n";
+            }
+            else if (board[row-1][col-1] != '-') 
+            {
+                cout << "Space Occupied!\n";
+            }
+            else
+            {
+                board[row-1][col-1] = currentPlayer; // updating board
+                break;
+            }
         }
     }
 }
