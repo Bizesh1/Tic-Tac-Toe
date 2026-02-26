@@ -1,5 +1,5 @@
 /*
- Tic-Tac-Toe 3.0
+ Tic-Tac-Toe 4.0
 */
 
 #include<iostream>
@@ -164,11 +164,12 @@ void resetBoard()
 void playAga()
 {
     char playAgain;
-
     while (true) 
     {
         cout << "\nPlay Again? (y/n): ";
         cin >> playAgain;
+        cin.ignore();
+
         if (playAgain == 'n' || playAgain == 'N')
             {
             cout << "\nThanks for playing !!\n";
