@@ -219,7 +219,7 @@ int main()
         }
 
         displayBoard();
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; //ternary operation
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; //ternary operation to alternate turns for X and O
 
     }
 }
