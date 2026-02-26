@@ -4,6 +4,8 @@
 *.out
 *.o
 *.obj
+*.json
+
 
 build/
 bin/
