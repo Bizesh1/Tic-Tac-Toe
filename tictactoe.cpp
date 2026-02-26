@@ -1,6 +1,5 @@
 /*
-Version 2.0
-
+ Tic-Tac-Toe 3.0
 */
 
 #include<iostream>
@@ -28,6 +27,16 @@ void displayBoard()
         cout << endl;
         if (i < 2) cout << "---------\n";
     }
+}
+
+void clearScreen() {   // function to clear screen after every move
+#ifdef _WIN32
+    system("cls");      // clear screen command in windows
+#else
+    system("clear");    // clear screen command in mac
+#endif
+
+cout << "\n------TicTacToe------\n" <<endl;
 }
 
 
@@ -162,17 +171,21 @@ void playAga()
         cin >> playAgain;
         if (playAgain == 'n' || playAgain == 'N')
             {
-            cout << "\nThanks for playing !!";
+            cout << "\nThanks for playing !!\n";
             gameRunning = false;
+            cout << "Press Enter to continue...\n";
+            cin.ignore();
+            cin.get();
             break;
 
             } else if (playAgain == 'y' || playAgain == 'Y'){
                 cout << "\n";
                 resetBoard();
+                clearScreen();
                 break;
 
             }else {
-                cout << "Invalid Input!";
+                cout << "Invalid Input! Enter either y or n.\n";
             }
     }
 }
@@ -189,6 +202,7 @@ int main()
 
         getInput();
         cout <<endl;
+        clearScreen();
 
         if (checkWinner()){
             displayBoard();
