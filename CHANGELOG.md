@@ -22,7 +22,6 @@ to leftover buffer in cin
 # Version 1.3
 - Added cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n') to clear input buffer before replay
 
-
 ---
 
 ---
@@ -38,8 +37,8 @@ to leftover buffer in cin
 - No use of enums or structures
 - Board isnt Centered
 - Use of two integers for input
-### Vision for Version 2.x
 
+### Vision for Version 2.x
 - Replace global variables with struct
 - Introduce enum for Player
 - Convert input system to 1–9 mapping

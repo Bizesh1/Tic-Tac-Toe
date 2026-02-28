@@ -1,5 +1,5 @@
 /*
- Tic-Tac-Toe 2.1
+ Tic-Tac-Toe 2.2
 */
 
 #include<iostream>
@@ -11,10 +11,11 @@
 #endif
 using namespace std;
 
+enum Player {X, O};
 struct Game
 {
     char board[3][3];
-    char currentPlayer = 'X';
+    Player currentPlayer;
     bool gameRunning = true;
 };
 
@@ -23,8 +24,13 @@ void initGame(Game &game)
     for(int i = 0; i < 3; i++)
     for(int j = 0; j < 3; j++)
         game.board[i][j] = '-';
-    game.currentPlayer = 'X';
+    game.currentPlayer = X;
     game.gameRunning = true;
+}
+
+char playerToChar(Player p)
+{
+    return (p == X) ? 'X' : 'O';
 }
 
 
@@ -77,7 +83,7 @@ bool checkWinner(const Game &game)
         }
     }
     
-    //diagnol
+    //diagonol
     if (game.board[0][0] == game.board[1][1] && game.board[1][1] == game.board[2][2] && game.board[0][0] != '-')
     {
         return true;
@@ -151,17 +157,18 @@ void getInput(Game &game)
 {
     string line;
     int row, col;
+    char player = playerToChar(game.currentPlayer);
 
     while (true)
     {
-        cout << "\n Player " <<  game.currentPlayer << " enter a move (eg. 1 2): ";
+        cout << "\n Player " <<  player << " enter a move (eg. 1 2): ";
         getline(cin, line);
 
         if (inputValidation1(line, row, col)) //calling the first validation function
         {
             if (inputValidation2(game, row, col))  // calling the second validation function
             {
-                game.board[row-1][col-1] = game.currentPlayer; // updating board
+                game.board[row-1][col-1] = player; // updating board
                 break;
             }
         }
@@ -175,7 +182,7 @@ void resetBoard(Game &game)
         for (int j = 0; j < 3; j++)
             game.board[i][j] = '-';
 
-    game.currentPlayer = 'X';
+    game.currentPlayer = X;
 }
 
 
@@ -193,7 +200,6 @@ void playAgain(Game &game)
             cout << "\nThanks for playing !!\n";
             game.gameRunning = false;
             cout << "Press Enter to continue...\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin.get();
             break;
 
@@ -209,6 +215,13 @@ void playAgain(Game &game)
     }
 }
 
+void gameUI(const Game &game)
+{
+    clearScreen();
+    cout << "\n------TicTacToe------\n" <<endl;
+    displayBoard(game);
+    cout <<endl;
+}
 
 int main()
 {
@@ -216,41 +229,32 @@ int main()
     initGame(game);
 
     enableANSI(); 
-    cout << "\n------TicTacToe------\n" <<endl;
-    displayBoard(game);
-    cout <<endl;
+    gameUI(game);
+
 
     while (game.gameRunning)
     {
 
-        clearScreen();
-        cout << "\n------TicTacToe------\n" <<endl;
-        displayBoard(game);
-
+        gameUI(game);
         getInput(game);
-        cout <<endl;
 
         if (checkWinner(game))
         {
-            clearScreen();
-            displayBoard(game);
-            cout << endl;
-            cout << game.currentPlayer << " Wins!!\n";
+            gameUI(game);
+            cout << playerToChar(game.currentPlayer) << " Wins!!\n";
             playAgain(game);
         }
 
         else if (checkDraw(game))
         {
-            clearScreen();
-            displayBoard(game);
-            cout << endl;
-            cout << "Its a tie !!\n";
+            gameUI(game);
+            cout << "Its a tie!!\n";
             playAgain(game);
         }
 
         else
         {
-        game.currentPlayer = (game.currentPlayer == 'X') ? 'O' : 'X'; //ternary operation to alternate turns for X and O
+        game.currentPlayer = (game.currentPlayer == X) ? O : X; //ternary operation to alternate turns for X and O
         }
     }
     return 0;
