@@ -1,14 +1,18 @@
 /*
- Tic-Tac-Toe 4.0
+ Tic-Tac-Toe 2.0
 */
 
 #include<iostream>
 #include<string>
 #include<sstream>
+#ifdef _WIN32
+#include <windows.h> // Required for the fix
+#endif
 using namespace std;
 
 // global variables
-char board[3][3] = {
+char board[3][3] = 
+{
     {'-', '-', '-'},
     {'-', '-', '-'},
     {'-', '-', '-'}
@@ -29,12 +33,21 @@ void displayBoard()
     }
 }
 
+void enableANSI() // function to enable ANSI on windows
+{
+    #ifdef _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+    #endif
+}
+
 void clearScreen() {   // function to clear screen after every move
-#ifdef _WIN32
-    system("cls");      // clear screen command in windows
-#else
-    system("clear");    // clear screen command in mac
-#endif
+     
+    std::cout << "\033[2J\033[1;1H"; // ANSI code to clear the screen
+
 
 cout << "\n------TicTacToe------\n" <<endl;
 }
@@ -108,7 +121,7 @@ bool inputValidation1(const string &line, int &row, int &col) // function to see
 
 }
 
-bool inputValidation2(const string &line, int &row, int &col)
+bool inputValidation2(int &row, int &col)
 {
     if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
     {
@@ -136,12 +149,12 @@ void getInput()
 
     while (true)
     {
-        cout << "\nEnter a move (eg. 1 2): ";
+        cout << "\n Player " <<  currentPlayer << " enter a move (eg. 1 2): ";
         getline(cin, line);
 
         if (inputValidation1(line, row, col)) //calling the first validation function
         {
-            if (inputValidation2(line, row, col))  // calling the second validation function
+            if (inputValidation2(row, col))  // calling the second validation function
             {
                 board[row-1][col-1] = currentPlayer; // updating board
                 break;
@@ -161,7 +174,7 @@ void resetBoard()
 }
 
 
-void playAga()
+void playAgain()
 {
     char playAgain;
     while (true) 
@@ -194,33 +207,42 @@ void playAga()
 
 int main()
 {
-   cout << "\n------TicTacToe------\n" <<endl;
+    enableANSI(); 
+    cout << "\n------TicTacToe------\n" <<endl;
     displayBoard();
     cout <<endl;
 
     while (gameRunning)
     {
 
+        clearScreen();
+        displayBoard();
+
         getInput();
         cout <<endl;
-        clearScreen();
 
-        if (checkWinner()){
+        if (checkWinner())
+        {
+            clearScreen();
             displayBoard();
             cout << endl;
             cout << currentPlayer << " Wins!!\n";
-            playAga();
+            playAgain();
         }
 
-        if (checkDraw()){
+        else if (checkDraw())
+        {
+            clearScreen();
             displayBoard();
             cout << endl;
             cout << "Its a tie !!\n";
-            playAga();
+            playAgain();
         }
 
-        displayBoard();
+        else
+        {
         currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; //ternary operation to alternate turns for X and O
-
+        }
     }
+    return 0;
 }
