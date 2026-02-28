@@ -60,3 +60,6 @@ it triggered both win and draw condition
 
 # Version 2.1
 - Removed Global Variable and used structure Game to store board, current player and game status
+- Added a function to initialize members of the game structure
+- Modified the arguments of the checkDraw(), checkWinner(), inputValidation2 to be constant using "const"
+- Added "limits" header file to clear input buffer

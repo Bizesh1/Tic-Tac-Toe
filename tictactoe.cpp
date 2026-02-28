@@ -4,6 +4,7 @@
 
 #include<iostream>
 #include<string>
+#include<limits>
 #include<sstream>
 #ifdef _WIN32
 #include <windows.h> // Required for the fix
@@ -12,25 +13,22 @@ using namespace std;
 
 struct Game
 {
-    char board[3][3] = 
-{
-    {'-', '-', '-'},
-    {'-', '-', '-'},
-    {'-', '-', '-'}
-};
+    char board[3][3];
     char currentPlayer = 'X';
     bool gameRunning = true;
 };
 
 void initGame(Game &game)
 {
-    game.board;
+    for(int i = 0; i < 3; i++)
+    for(int j = 0; j < 3; j++)
+        game.board[i][j] = '-';
     game.currentPlayer = 'X';
     game.gameRunning = true;
 }
 
 
-void displayBoard(Game &game)
+void displayBoard(const Game &game)
 {
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
@@ -53,16 +51,13 @@ void enableANSI() // function to enable ANSI on windows
     #endif
 }
 
-void clearScreen() {   // function to clear screen after every move
-     
+void clearScreen()           // function to clear screen after every move
+{   
     std::cout << "\033[2J\033[1;1H"; // ANSI code to clear the screen
-
-
-cout << "\n------TicTacToe------\n" <<endl;
 }
 
 
-bool checkWinner(Game &game)
+bool checkWinner(const Game &game)
 {
     // horizontal
     for (int i = 0; i < 3; i++)
@@ -98,7 +93,7 @@ bool checkWinner(Game &game)
 }
 
 // Check tie
-bool checkDraw(Game &game) 
+bool checkDraw(const Game &game) 
 {
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 3; j++)
@@ -131,7 +126,7 @@ bool inputValidation1(const string &line, int &row, int &col) // function to see
 
 }
 
-bool inputValidation2(Game &game, int &row, int &col)
+bool inputValidation2(const Game &game, int row, int col)
 {
     if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
     {
@@ -191,14 +186,14 @@ void playAgain(Game &game)
     {
         cout << "\nPlay Again? (y/n): ";
         cin >> playAgain;
-        cin.ignore();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clears the input buffer up to the next newline to prevent leftover input issues
 
         if (playAgain == 'n' || playAgain == 'N')
             {
             cout << "\nThanks for playing !!\n";
             game.gameRunning = false;
             cout << "Press Enter to continue...\n";
-            cin.ignore();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             cin.get();
             break;
 
@@ -218,6 +213,7 @@ void playAgain(Game &game)
 int main()
 {
     Game game;
+    initGame(game);
 
     enableANSI(); 
     cout << "\n------TicTacToe------\n" <<endl;
@@ -228,6 +224,7 @@ int main()
     {
 
         clearScreen();
+        cout << "\n------TicTacToe------\n" <<endl;
         displayBoard(game);
 
         getInput(game);
