@@ -57,3 +57,6 @@ to leftover buffer in cin
 - Fixed a bug in win and draw condition using of else-if and else. Bug: When a player won on the last move
 it triggered both win and draw condition
 - Shows the currentPlayer in the input prompt
+
+# Version 2.1
+- Removed Global Variable and used structure Game to store board, current player and game status

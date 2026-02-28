@@ -1,5 +1,5 @@
 /*
- Tic-Tac-Toe 2.0
+ Tic-Tac-Toe 2.1
 */
 
 #include<iostream>
@@ -10,22 +10,31 @@
 #endif
 using namespace std;
 
-// global variables
-char board[3][3] = 
+struct Game
+{
+    char board[3][3] = 
 {
     {'-', '-', '-'},
     {'-', '-', '-'},
     {'-', '-', '-'}
 };
+    char currentPlayer = 'X';
+    bool gameRunning = true;
+};
 
-char currentPlayer = 'X';
-bool gameRunning = true;
+void initGame(Game &game)
+{
+    game.board;
+    game.currentPlayer = 'X';
+    game.gameRunning = true;
+}
 
-void displayBoard()
+
+void displayBoard(Game &game)
 {
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
-            cout << board[i][j];
+            cout << game.board[i][j];
             if (j < 2) cout << " | ";
         }
         cout << endl;
@@ -53,12 +62,12 @@ cout << "\n------TicTacToe------\n" <<endl;
 }
 
 
-bool checkWinner()
+bool checkWinner(Game &game)
 {
     // horizontal
     for (int i = 0; i < 3; i++)
     {
-        if (board[i][0] == board[i][1] && board[i][2] == board[i][1] && board[i][0] != '-')
+        if (game.board[i][0] == game.board[i][1] && game.board[i][2] == game.board[i][1] && game.board[i][0] != '-')
         {
             return true;
         }
@@ -67,19 +76,19 @@ bool checkWinner()
     // vertical
     for (int i = 0; i < 3; i++)
     {
-        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != '-')
+        if (game.board[0][i] == game.board[1][i] && game.board[1][i] == game.board[2][i] && game.board[0][i] != '-')
         {
             return true;
         }
     }
     
     //diagnol
-    if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != '-')
+    if (game.board[0][0] == game.board[1][1] && game.board[1][1] == game.board[2][2] && game.board[0][0] != '-')
     {
         return true;
     }
 
-    if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != '-')
+    if (game.board[0][2] == game.board[1][1] && game.board[1][1] == game.board[2][0] && game.board[0][2] != '-')
     {
         return true;
     }
@@ -89,10 +98,11 @@ bool checkWinner()
 }
 
 // Check tie
-bool checkDraw() {
+bool checkDraw(Game &game) 
+{
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 3; j++)
-            if(board[i][j] == '-')
+            if(game.board[i][j] == '-')
                 return false;
     return true;
 }
@@ -121,14 +131,14 @@ bool inputValidation1(const string &line, int &row, int &col) // function to see
 
 }
 
-bool inputValidation2(int &row, int &col)
+bool inputValidation2(Game &game, int &row, int &col)
 {
     if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
     {
         cout << "Invalid Input! Enter numbers ranging from 1 to 3.\n";
         return false;
     }
-    else if (board[row-1][col-1] != '-')  // checking if the slot is occupied
+    else if (game.board[row-1][col-1] != '-')  // checking if the slot is occupied
     {
         cout << "Space Occupied!\n";
         return false;
@@ -142,21 +152,21 @@ bool inputValidation2(int &row, int &col)
 
 
 //get input
-void getInput()
+void getInput(Game &game)
 {
     string line;
     int row, col;
 
     while (true)
     {
-        cout << "\n Player " <<  currentPlayer << " enter a move (eg. 1 2): ";
+        cout << "\n Player " <<  game.currentPlayer << " enter a move (eg. 1 2): ";
         getline(cin, line);
 
         if (inputValidation1(line, row, col)) //calling the first validation function
         {
-            if (inputValidation2(row, col))  // calling the second validation function
+            if (inputValidation2(game, row, col))  // calling the second validation function
             {
-                board[row-1][col-1] = currentPlayer; // updating board
+                game.board[row-1][col-1] = game.currentPlayer; // updating board
                 break;
             }
         }
@@ -164,17 +174,17 @@ void getInput()
 }
 
 
-void resetBoard()
+void resetBoard(Game &game)
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            board[i][j] = '-';
+            game.board[i][j] = '-';
 
-    currentPlayer = 'X';
+    game.currentPlayer = 'X';
 }
 
 
-void playAgain()
+void playAgain(Game &game)
 {
     char playAgain;
     while (true) 
@@ -186,7 +196,7 @@ void playAgain()
         if (playAgain == 'n' || playAgain == 'N')
             {
             cout << "\nThanks for playing !!\n";
-            gameRunning = false;
+            game.gameRunning = false;
             cout << "Press Enter to continue...\n";
             cin.ignore();
             cin.get();
@@ -194,7 +204,7 @@ void playAgain()
 
             } else if (playAgain == 'y' || playAgain == 'Y'){
                 cout << "\n";
-                resetBoard();
+                resetBoard(game);
                 clearScreen();
                 break;
 
@@ -207,41 +217,43 @@ void playAgain()
 
 int main()
 {
+    Game game;
+
     enableANSI(); 
     cout << "\n------TicTacToe------\n" <<endl;
-    displayBoard();
+    displayBoard(game);
     cout <<endl;
 
-    while (gameRunning)
+    while (game.gameRunning)
     {
 
         clearScreen();
-        displayBoard();
+        displayBoard(game);
 
-        getInput();
+        getInput(game);
         cout <<endl;
 
-        if (checkWinner())
+        if (checkWinner(game))
         {
             clearScreen();
-            displayBoard();
+            displayBoard(game);
             cout << endl;
-            cout << currentPlayer << " Wins!!\n";
-            playAgain();
+            cout << game.currentPlayer << " Wins!!\n";
+            playAgain(game);
         }
 
-        else if (checkDraw())
+        else if (checkDraw(game))
         {
             clearScreen();
-            displayBoard();
+            displayBoard(game);
             cout << endl;
             cout << "Its a tie !!\n";
-            playAgain();
+            playAgain(game);
         }
 
         else
         {
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X'; //ternary operation to alternate turns for X and O
+        game.currentPlayer = (game.currentPlayer == 'X') ? 'O' : 'X'; //ternary operation to alternate turns for X and O
         }
     }
     return 0;
