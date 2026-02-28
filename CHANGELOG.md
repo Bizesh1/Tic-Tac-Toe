@@ -62,3 +62,8 @@ it triggered both win and draw condition
 - Added a function to initialize members of the game structure
 - Modified the arguments of the checkDraw(), checkWinner(), inputValidation2 to be constant using "const"
 - Added "limits" header file to clear input buffer
+
+# Version 2.2
+- Added enum for players
+- Added a function to convert enum to character
+- Added a function for the game UI to reduce code redundancy
