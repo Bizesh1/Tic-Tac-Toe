@@ -23,24 +23,28 @@ to leftover buffer in cin
 - Added cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n') to clear input buffer before replay
 
 
+---
 
-## Verdict for Version 1.x
-- Clean Logic
-- Foundation for fine tuning
-- Overall Playable
 
-### Limitations of v1.x
-- Use of system() introducing security concerns
-- No use of enums or structures
-- Board isnt Centered
-- Use of two integers for input
+    ### Verdict for Version 1.x
+    - Clean Logic
+    - Foundation for fine tuning
+    - Overall Playable
 
-## Vision for Version 2.x
-- Replace global variables with struct
-- Introduce enum for Player
-- Convert input system to 1–9 mapping
-- Center the board
+    ### Limitations of v1.x
+    - Use of system() introducing security concerns
+    - No use of enums or structures
+    - Board isnt Centered
+    - Use of two integers for input
 
+    ### Vision for Version 2.x
+    - Replace global variables with struct
+    - Introduce enum for Player
+    - Convert input system to 1–9 mapping
+    - Center the board
+
+
+---
 
 # Version 2.0
 - Changed the name of function; playAga() to playAgain()
