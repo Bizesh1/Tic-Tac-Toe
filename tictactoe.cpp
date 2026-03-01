@@ -1,5 +1,5 @@
 /*
- Tic-Tac-Toe 2.3
+ Tic-Tac-Toe 2.4
 */
 
 #include<iostream>
