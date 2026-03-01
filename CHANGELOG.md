@@ -58,7 +58,7 @@ it triggered both win and draw condition
 - Shows the currentPlayer in the input prompt
 
 # Version 2.1
-- Removed Global Variable and used structure Game to store board, current player and game status
+- Removed Global Variable and encapsulated board, current player and game status in a structure
 - Added a function to initialize members of the game structure
 - Modified the arguments of the checkDraw(), checkWinner(), inputValidation2 to be constant using "const"
 - Added "limits" header file to clear input buffer
@@ -67,3 +67,8 @@ it triggered both win and draw condition
 - Added enum for players
 - Added a function to convert enum to character
 - Added a function for the game UI to reduce code redundancy
+
+# Version 2.3
+- Positing Mapping: Use 1–9 input system 
+- Input Validation 2 now only has one goal; to check if the slot is free
+- Position Validity is checked in the getInput block

@@ -1,5 +1,5 @@
 /*
- Tic-Tac-Toe 2.2
+ Tic-Tac-Toe 2.3
 */
 
 #include<iostream>
@@ -68,7 +68,9 @@ bool checkWinner(const Game &game)
     // horizontal
     for (int i = 0; i < 3; i++)
     {
-        if (game.board[i][0] == game.board[i][1] && game.board[i][2] == game.board[i][1] && game.board[i][0] != '-')
+        if (game.board[i][0] == game.board[i][1] && 
+            game.board[i][2] == game.board[i][1] && 
+            game.board[i][0] != '-')
         {
             return true;
         }
@@ -77,19 +79,25 @@ bool checkWinner(const Game &game)
     // vertical
     for (int i = 0; i < 3; i++)
     {
-        if (game.board[0][i] == game.board[1][i] && game.board[1][i] == game.board[2][i] && game.board[0][i] != '-')
+        if (game.board[0][i] == game.board[1][i] && 
+            game.board[1][i] == game.board[2][i] && 
+            game.board[0][i] != '-')
         {
             return true;
         }
     }
     
     //diagonol
-    if (game.board[0][0] == game.board[1][1] && game.board[1][1] == game.board[2][2] && game.board[0][0] != '-')
+    if (game.board[0][0] == game.board[1][1] && 
+        game.board[1][1] == game.board[2][2] && 
+        game.board[0][0] != '-')
     {
         return true;
     }
 
-    if (game.board[0][2] == game.board[1][1] && game.board[1][1] == game.board[2][0] && game.board[0][2] != '-')
+    if (game.board[0][2] == game.board[1][1] && 
+        game.board[1][1] == game.board[2][0] && 
+        game.board[0][2] != '-')
     {
         return true;
     }
@@ -109,24 +117,24 @@ bool checkDraw(const Game &game)
 }
 
 
-bool inputValidation1(const string &line, int &row, int &col) // function to see if there is only two integers as input or not
+bool inputValidation1(const string &line, int &pos) // function to see if there's only one input
 {
     stringstream ss(line);
-    // try to extract two integers
-    if (ss >> row >> col)
+    
+    if (ss >> pos)      // extracting the positon integer
     {
-        // check for extra invalid input
-        string extra;
+        
+        string extra;   // string to check for extra invalid input
         if (ss >> extra)
         {
-            cout << "Invalid input! Enter exactly two numbers.\n";
+            cout << "Invalid Input! Enter exactly one position.\n";
             return false;
 
         }else
             {return true;}
     }else
     {
-        cout << "Invalid Input! Enter exactly two interger characters!\n";
+        cout << "Invalid Input! Enter exactly one position.\n";
         return false;
     }
 
@@ -134,12 +142,7 @@ bool inputValidation1(const string &line, int &row, int &col) // function to see
 
 bool inputValidation2(const Game &game, int row, int col)
 {
-    if (row < 1 || row > 3 || col < 1 || col > 3)      // simple input validation
-    {
-        cout << "Invalid Input! Enter numbers ranging from 1 to 3.\n";
-        return false;
-    }
-    else if (game.board[row-1][col-1] != '-')  // checking if the slot is occupied
+    if (game.board[row][col] != '-')  // checking if the slot is occupied
     {
         cout << "Space Occupied!\n";
         return false;
@@ -151,24 +154,36 @@ bool inputValidation2(const Game &game, int row, int col)
 }
 
 
+void posMap(int pos, int &row, int &col)
+{
+    row = (pos - 1) / 3;
+    col = (pos - 1) % 3;
+}
 
-//get input
-void getInput(Game &game)
+
+void getInput(Game &game)          //get input
 {
     string line;
-    int row, col;
+    int row, col, pos;
     char player = playerToChar(game.currentPlayer);
 
     while (true)
     {
-        cout << "\n Player " <<  player << " enter a move (eg. 1 2): ";
+        cout << "\n Player " <<  player << " enter a move (1-9): ";
         getline(cin, line);
 
-        if (inputValidation1(line, row, col)) //calling the first validation function
+        if (inputValidation1(line, pos)) //calling the first validation function
         {
+            if (pos < 1 || pos > 9)
+            {
+                cout << "Invalid Input! Enter numbers ranging from 1 to 9.\n";
+                continue;
+            }
+
+            posMap(pos, row, col);
             if (inputValidation2(game, row, col))  // calling the second validation function
             {
-                game.board[row-1][col-1] = player; // updating board
+                game.board[row][col] = player; // updating board
                 break;
             }
         }
@@ -229,7 +244,6 @@ int main()
     initGame(game);
 
     enableANSI(); 
-    gameUI(game);
 
 
     while (game.gameRunning)
