@@ -11,6 +11,7 @@
 #endif
 using namespace std;
 
+const int pad = 10;
 enum Player {X, O};
 struct Game
 {
@@ -36,13 +37,20 @@ char playerToChar(Player p)
 
 void displayBoard(const Game &game)
 {
-    for (int i = 0; i < 3; i++){
-        for (int j = 0; j < 3; j++){
+    for (int i = 0; i < 3; i++)
+    {
+        cout << string(pad, ' ');
+        for (int j = 0; j < 3; j++)
+        {
             cout << game.board[i][j];
             if (j < 2) cout << " | ";
         }
         cout << endl;
-        if (i < 2) cout << "---------\n";
+        if (i < 2) 
+        {
+            cout << string(pad, ' ');
+            cout << "---------\n";
+        }
     }
 }
 
@@ -233,7 +241,7 @@ void playAgain(Game &game)
 void gameUI(const Game &game)
 {
     clearScreen();
-    cout << "\n------TicTacToe------\n" <<endl;
+    cout << string(pad - 7, ' ') << "------ TicTacToe ------\n\n";
     displayBoard(game);
     cout <<endl;
 }

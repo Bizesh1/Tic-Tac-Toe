@@ -72,3 +72,6 @@ it triggered both win and draw condition
 - Positing Mapping: Use 1–9 input system 
 - Input Validation 2 now only has one goal; to check if the slot is free
 - Position Validity is checked in the getInput block
+
+# Version 2.4
+- Added padding to centre the board and title
