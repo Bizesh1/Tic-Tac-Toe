@@ -2,25 +2,29 @@
  Tic-Tac-Toe 2.4
 */
 
-#include<iostream>
+#include<iostream>   
 #include<string>
-#include<limits>
-#include<sstream>
+#include<limits>      // Required for numeric_limits (used to clear input buffer safely)
+#include<sstream>     // Required for stringstream (used to validate and parse user input)
 #ifdef _WIN32
-#include <windows.h> // Required for the fix
+#include <windows.h> // Required for Windows API function to enable ANSI code for windows
 #endif
 using namespace std;
 
-const int pad = 10;
-enum Player {X, O};
-struct Game
+
+// global variables
+const int pad = 10;   // padding to align game board and title
+enum Player {X, O};   // enum that stores players
+
+struct Game           // structure class to encapsulate game status and board
 {
     char board[3][3];
     Player currentPlayer;
-    bool gameRunning = true;
+    bool gameRunning;
 };
 
-void initGame(Game &game)
+
+void initGame(Game &game)       // function to initialize Game variables
 {
     for(int i = 0; i < 3; i++)
     for(int j = 0; j < 3; j++)
@@ -29,13 +33,14 @@ void initGame(Game &game)
     game.gameRunning = true;
 }
 
-char playerToChar(Player p)
+
+char playerToChar(Player p)      // helper function to return character corresponding to enum
 {
     return (p == X) ? 'X' : 'O';
 }
 
 
-void displayBoard(const Game &game)
+void displayBoard(const Game &game)   // function to display Game board at all
 {
     for (int i = 0; i < 3; i++)
     {
@@ -54,7 +59,7 @@ void displayBoard(const Game &game)
     }
 }
 
-void enableANSI() // function to enable ANSI on windows
+void enableANSI()                        // function to enable ANSI on windows
 {
     #ifdef _WIN32
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -71,7 +76,7 @@ void clearScreen()           // function to clear screen after every move
 }
 
 
-bool checkWinner(const Game &game)
+bool checkWinner(const Game &game)           // function to check the win cinditions
 {
     // horizontal
     for (int i = 0; i < 3; i++)
@@ -114,8 +119,8 @@ bool checkWinner(const Game &game)
 
 }
 
-// Check tie
-bool checkDraw(const Game &game) 
+
+bool checkDraw(const Game &game)                // Function to Check tie
 {
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 3; j++)
@@ -162,14 +167,14 @@ bool inputValidation2(const Game &game, int row, int col)
 }
 
 
-void posMap(int pos, int &row, int &col)
+void posMap(int pos, int &row, int &col)       // function map user input (1-9) to row and column
 {
     row = (pos - 1) / 3;
     col = (pos - 1) % 3;
 }
 
 
-void getInput(Game &game)          //get input
+void getInput(Game &game)          //function to get player input, validate position and update board 
 {
     string line;
     int row, col, pos;
@@ -199,7 +204,7 @@ void getInput(Game &game)          //get input
 }
 
 
-void resetBoard(Game &game)
+void resetBoard(Game &game)         // function to reset game if the players want to play again
 {
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
@@ -209,7 +214,7 @@ void resetBoard(Game &game)
 }
 
 
-void playAgain(Game &game)
+void playAgain(Game &game)          // handles the aftermath of the game
 {
     char playAgain;
     while (true) 
@@ -238,7 +243,7 @@ void playAgain(Game &game)
     }
 }
 
-void gameUI(const Game &game)
+void gameUI(const Game &game)        // function that displays the game UI
 {
     clearScreen();
     cout << string(pad - 7, ' ') << "------ TicTacToe ------\n\n";
@@ -246,7 +251,7 @@ void gameUI(const Game &game)
     cout <<endl;
 }
 
-int main()
+int main()        // main game loop
 {
     Game game;
     initGame(game);
