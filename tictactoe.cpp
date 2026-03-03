@@ -204,15 +204,6 @@ void getInput(Game &game)          //function to get player input, validate posi
 }
 
 
-void resetBoard(Game &game)         // function to reset game if the players want to play again
-{
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++)
-            game.board[i][j] = '-';
-
-    game.currentPlayer = X;
-}
-
 
 void playAgain(Game &game)          // handles the aftermath of the game
 {
@@ -233,7 +224,7 @@ void playAgain(Game &game)          // handles the aftermath of the game
 
             } else if (playAgain == 'y' || playAgain == 'Y'){
                 cout << "\n";
-                resetBoard(game);
+                initGame(game);
                 clearScreen();
                 break;
 
