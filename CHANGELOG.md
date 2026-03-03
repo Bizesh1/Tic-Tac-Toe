@@ -75,3 +75,4 @@ it triggered both win and draw condition
 
 # Version 2.4
 - Added padding to centre the board and title
+- Removed the resetBoard function since a board initialization function is already present.
